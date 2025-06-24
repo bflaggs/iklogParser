@@ -193,11 +193,11 @@ def ParseIkLog(inputFile, outputFilepath, LetyID=97):
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("ERROR: Usage must be --> python3 ikLogParser.py <input_file_path> <output_path>")
+        print("ERROR: Usage must be --> python3 ikLogParser.py <input_file> <output_path>")
         sys.exit(1)
 
-    input_file_path = sys.argv[1]
+    input_file = sys.argv[1]
     output_path = sys.argv[2]
 
     # If need for a different local station in the future, change 97 to necessary LS ID
-    ParseIkLog(input_file_path, output_path, LetyID=97)
+    ParseIkLog(input_file, output_path, LetyID=97)

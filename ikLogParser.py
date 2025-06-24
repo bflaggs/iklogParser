@@ -78,7 +78,8 @@ def OrganizeT3Info(t3request):
                 # Convert strings to ints
                 value = list(map(int, value_list))
 
-            elif value.startswith('"') and value.endswith('"'):
+            # Add 'or' option to account for FD trigger algorithms (algo="FD ...")
+            elif (value.startswith('"') and value.endswith('"')) or value.startswith('"'):
                 value = str(value)
             else:
                 # Convert to float first to fix error when value is near zero (i.e. 2.XXXe-8 or something) 

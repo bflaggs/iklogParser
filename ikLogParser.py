@@ -26,7 +26,7 @@ def GetT3RequestInfo(string, delimiter=None):
 
     Returns
     -------
-    seaprated : list
+    separated : list
         List of separated T3 information. Saved as a list of strings.
     """
     separated = []
@@ -107,7 +107,7 @@ def GetLetyInfo(t3info, LetyID):
         gpsSec      - GPS second of T3 request
         gpsMicroSec - GPS microsecond of T3 request
         offset      - Offset in GPS microseconds of the T3 request at Lety Jr. (must add to gpsMicroSec)
-        window      - Uncertainty window in GPS microseconds of the Lety Jr. T3 request (0 = Lety has T2 that participated in the trigger)
+        window      - Uncertainty window in GPS microseconds of the Lety Jr. T3 request (0 = Lety has T2 that participated in the trigger that initiated the T3 request)
     """
     data = OrganizeT3Info(t3info)
 
@@ -142,7 +142,7 @@ def ParseIkLog(inputFile, outputFilepath, LetyID=97):
         gpsSec      - GPS second of T3 request
         gpsMicroSec - GPS microsecond of T3 request
         offset      - Offset in GPS microseconds of the T3 request at Lety Jr. (must add to gpsMicroSec)
-        window      - Uncertainty window in GPS microseconds of the Lety Jr. T3 request (0 = Lety has T2 that participated in the trigger)
+        window      - Uncertainty window in GPS microseconds of the Lety Jr. T3 request (0 = Lety has T2 that participated in the trigger that initiated the T3 request)
     """
     # Make output file. Get date from input IkLog file.
     splt = inputFile.split("_")
@@ -194,7 +194,7 @@ def ParseIkLog(inputFile, outputFilepath, LetyID=97):
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("ERROR: Usage must be --> python3 ikLogParser.py <input_file> <output_path>")
+        print("ERROR: Usage must be --> python3 ikLogParser.py <input_iklog_file_path> <output_path>")
         sys.exit(1)
 
     input_file = sys.argv[1]

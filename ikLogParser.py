@@ -154,7 +154,7 @@ def ParseIkLog(inputFile, outputFilepath, LetyID=97):
         outFile = outputFilepath + "/LetyT3Requests_" + filedate + ".txt"
 
     fileout = open(outFile, "w")
-    fileout.write("#gpsSec, gpsMicroSec, offset, window\n")
+    fileout.write("#gpsSec, gpsMicroSec, offset, window, trigger\n")
     
     # letyNum to be used for debugging purposes/T3 request rate calculations if needed
     letyNum = 0
@@ -187,7 +187,7 @@ def ParseIkLog(inputFile, outputFilepath, LetyID=97):
                 else:
                     letyT3 = GetLetyInfo(t3info, LetyID)
                     letyNum += 1
-                    fileout.write(str(letyT3[0]) + ", " + str(letyT3[1]) + ", " + str(letyT3[2]) + ", " + str(letyT3[3]) + "\n")
+                    fileout.write(str(letyT3[0]) + ", " + str(letyT3[1]) + ", " + str(letyT3[2]) + ", " + str(letyT3[3]) + ", " + str(trig) + "\n")
     fileout.close()
     filein.close()
 

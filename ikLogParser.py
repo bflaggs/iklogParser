@@ -192,6 +192,67 @@ def ParseIkLog(inputFile, outputFilepath, LetyID=97):
     filein.close()
 
 
+# DebugParser function not used, but keep here for testing purposes
+def DebugParser(inputFile, LetyID=97):
+    """
+    Used to test the output of the IkLog file parser.
+    Will be done by explicitly printing parts of each step.
+
+    Parameters
+    ----------
+    inputFile : str
+        Absolute path + filename of daily IkLog file to parse.
+    LetyID : int
+        Local station ID of Lety Jr. Should always be 97.
+
+    Returns
+    -------
+    None
+        Prints debugging information to the terminal.
+    """    
+    # letyNum to be used for debugging purposes/T3 request rate calculations if needed
+    letyNum = 0
+    filein = open(inputFile, "r")
+    for iline, line in enumerate(filein):
+        cols = line.strip().split("|")
+
+        # Skip data line if it is not in expected format
+        if len(cols) != 6:
+            print(f"Skipping line {iline + 1} with unexpected format: {line.strip()}")
+            continue
+
+        # Check for if Lety Jr. turns on during the day via the IkLsReady message
+        if "IkLsReady" in cols:
+            # Get station ID from the IkLsReady message
+            stationID = cols[4].strip().split(" ")[0].split("=")[1]
+            if stationID == str(LetyID):
+                print(f"Lety Jr. sent reset signal at time {cols[0]}. Possible issues with data near this time")
+
+        # If the message is an IkT3 request (probably safer to do this then parse by column number...)
+        if "IkT3" not in cols:
+            continue
+        else:
+            trig = cols[1]
+            message = cols[3]
+            t3string = cols[4]
+
+            t3info = GetT3RequestInfo(t3string, delimiter=" ")
+
+            # Parse for Lety participation in T3, if no then skip T3 request
+            address_entry = next((string for string in t3info if string.startswith("addresses=")), "")
+            if address_entry == "":
+                continue
+            else:
+                addresses = address_entry.split("=")[1].strip("{}").split(" ")
+                if str(LetyID) not in addresses:
+                    continue
+                else:
+                    letyT3 = GetLetyInfo(t3info, LetyID)
+                    print(f"Lety Jr. T3 request at time {letyT3[0]} with trigger {trig}")
+                    letyNum += 1
+    filein.close()
+
+
 if __name__ == "__main__":
     if len(sys.argv) != 3:
         print("ERROR: Usage must be --> python3 ikLogParser.py <input_iklog_file_path> <output_path>")
